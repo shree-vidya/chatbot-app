@@ -29,7 +29,7 @@ mongoose.Promise=global.Promise;
 
 app.get('/language',(req,res,next) => {
     request({
-        url:'https://salty-dusk-54853.herokuapp.com/language',
+        url:'https://tranquil-fortress-60933.herokuapp.com/language',
         method: 'GET',
     } ,function(error,resp, body){
             if(!error && resp.statusCode == 200){
@@ -44,7 +44,7 @@ app.get('/language',(req,res,next) => {
 
 app.get('/category',(req,res,next) => {
     request({
-        url:'https://salty-dusk-54853.herokuapp.com/category',
+        url:'https://tranquil-fortress-60933.herokuapp.com/category',
         method: 'GET',
     } ,function(error,resp, body){
             if(!error && resp.statusCode == 200){
@@ -135,7 +135,7 @@ app.post('/',(req,res,next) => {
                 i=2;
                 else if(option.language == "te")
                 i=3;
-                else if(option.language == "tn")
+                else if(option.language == "ta")
                 i=4;
                 else if(option.language == "ml")
                 i=5;
@@ -148,7 +148,7 @@ app.post('/',(req,res,next) => {
                 m.toString();
 
                 option.ques.toLowerCase();
-                if(option.category == "1" && option.previous_question>0 && option.previous_question<3){
+                if(option.category == "1"){
                          if(option.ques == 'yes'){
                              console.log(n)
                             Symptom.find({num:n})
@@ -156,7 +156,7 @@ app.post('/',(req,res,next) => {
                              .then(doc => {
                                  console.log("From database",doc);
                              if(doc.length > 0) { 
-                                 if(option.previous_question != 2){
+                                 if(option.previous_question < 16){
                                     res.status(200).json({
                                         "answer" : doc[0].ques[i],
                                         "question_id" : (2*option.previous_question).toString() ,
@@ -183,7 +183,7 @@ app.post('/',(req,res,next) => {
                              .then(doc => {
                                  console.log("From database",doc);
                              if(doc.length > 0) {
-                                if(option.previous_question != 2 && option.previous_question != 1){
+                                if(option.previous_question < 16){
                                     res.status(200).json({
                                         "answer" : doc[0].ques[i],
                                         "question_id" : (2*option.previous_question+1).toString() ,
@@ -206,13 +206,13 @@ app.post('/',(req,res,next) => {
                               })
                          } else {
                             res.status(422).json({
-                                "answer" : "Wrong input",
+                                "answer" : "Incorrect answer. Please give yes or no as answer.",
                                 "chain" : "false",
                                 "question_id" :"-1"
                                 });
 
                          }
-         } else if(option.category == "3" && option.previous_question>0 && option.previous_question<25){
+         } else if(option.category == "3"){
                                 if(option.ques == 'yes'){
                                     console.log(n)
                                 Precaution.find({num:n})
@@ -220,7 +220,7 @@ app.post('/',(req,res,next) => {
                                 .then(doc => {
                                     console.log("From database",doc);
                                 if(doc.length > 0) { 
-                                    if(option.previous_question != 12 && option.previous_question != 2){
+                                    if(option.previous_question < 16){
                                     res.status(200).json({
                                         "answer" : doc[0].ques[i],
                                         "question_id" : (2*option.previous_question).toString() ,
@@ -247,7 +247,7 @@ app.post('/',(req,res,next) => {
                                 .then(doc => {
                                     console.log("From database",doc);
                                 if(doc) {
-                                    if(option.previous_question != 12 && option.previous_question != 2 && option.previous_question != 3 && option.previous_question != 6){
+                                    if(option.previous_question < 16){
                                         res.status(200).json({
                                             "answer" : doc[0].ques[i],
                                             "question_id" : (2*option.previous_question+1).toString() ,
@@ -277,7 +277,7 @@ app.post('/',(req,res,next) => {
 
                     }
            } else {
-            Symptom.find({num: "6"})
+            Symptom.find({num: "999"})
             .exec()
             .then(doc => {
                 console.log("From database",doc);
@@ -293,7 +293,7 @@ app.post('/',(req,res,next) => {
 
      } else {
                 request({
-                        url:'https://salty-dusk-54853.herokuapp.com/'+option.category,
+                        url:'https://tranquil-fortress-60933.herokuapp.com/'+option.category,
                         method: 'POST',
                         json: {"ques" : response.text, 
                                "lang" : option.language
