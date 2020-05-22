@@ -43,8 +43,10 @@ app.get('/language',(req,res,next) => {
 });
 
 app.get('/category',(req,res,next) => {
+    var lang = req.query.lang;
+    console.log(lang)
     request({
-        url:'https://tranquil-fortress-60933.herokuapp.com/category',
+        url:'https://tranquil-fortress-60933.herokuapp.com/category?lang='+lang,
         method: 'GET',
     } ,function(error,resp, body){
             if(!error && resp.statusCode == 200){
